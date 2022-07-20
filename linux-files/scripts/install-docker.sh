@@ -23,6 +23,14 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 groupadd docker
 usermod -aG docker $USER
 
+echo ""
 echo "Install completed, please reboot before you attempt to use docker."
+echo ""
+read -p 'Would you like to restart now? [y/N]: ' answer
 
+if [[ "$answer" =~ ^[yY] ]]; then
+    echo "Rebooting in 3 seconds..."
+    sleep 3
+    shutdown -r now
+fi
 exit 0
