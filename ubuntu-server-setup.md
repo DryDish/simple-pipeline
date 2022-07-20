@@ -14,7 +14,7 @@ First thing is always to update and upgrade the current packages
 
 
 # Install Docker & Docker Compose Automatically
-I have provided a [script](./linux-service/scripts/install-docker.sh) to automatically install docker and docker compose.
+I have provided a [script](linux-files/scripts/install-docker.sh) to automatically install docker and docker compose.
 
 To use it first mark it as executable with the command:
 * `chmod +x install-docker.sh`
