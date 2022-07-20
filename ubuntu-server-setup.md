@@ -18,7 +18,8 @@ I have provided a [script](linux-files/scripts/install-docker.sh) to automatical
 
 To use it first mark it as executable with the command:
 * `chmod +x install-docker.sh`
-And then execute it with sudo:
+
+Then execute it with sudo:
 * `sudo ./install-docker.sh`
 
 # Install Docker & Docker Compose Manually
