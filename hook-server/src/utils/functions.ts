@@ -42,7 +42,7 @@ const copyScripts = (): number => {
 	shell.cd(`${SERVER_ROOT}`);
 
 	// Copy the scripts folder from the root directory to the repository directory
-	const result: ShellString = shell.cp("-rf", "scripts/", `${SERVER_ROOT}/git/assignment-tests-mandatory`);
+	const result: ShellString = shell.cp("-rf", "./src/utils/scripts/", `${SERVER_ROOT}/git/assignment-tests-mandatory`);
 
 	if (result.code === 0) {
 		info("Copy was successful");
