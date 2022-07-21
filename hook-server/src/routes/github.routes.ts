@@ -1,8 +1,8 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, Router } from "express";
 import { cleanupDirs, copyScripts, gitClone, runBuildScript } from "../utils/functions";
-import { info, warn, error } from "../utils/logger";
+import { info, warn, error } from "../utils/logger.js";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 // Testing POST endpoint - used to debug and print incoming messages and bodies
 router.post("/test", (req: Request, res: Response) => {
@@ -23,13 +23,13 @@ router.post("/", (req: Request, res: Response) => {
 	info(`Incoming GitHub hook!`);
 
 	if (req.body.ref === "refs/heads/main") {
-		const repoUrl = req.body.repository.url;
+		const repoUrl: string = req.body.repository.url;
 
 		res.status(200).json({ status: "beginning build", reason: "correct branch" });
 		info("This is the right branch, proceeding..");
 
 		// Initialize my return variables
-		let clone_result, copy_result, script_result;
+		let clone_result = 1, copy_result = 1, script_result = 1;
 
 		// Clone repository
 		clone_result = gitClone(repoUrl);

@@ -1,5 +1,5 @@
 import { SERVER_ROOT } from "./environment-variables";
-import shell from "shelljs";
+import shell, { ShellString } from "shelljs";
 import { error, warn, info } from "./logger.js";
 
 /**
@@ -18,7 +18,7 @@ const gitClone = (repoUrl: string): number => {
 	shell.cd(`${SERVER_ROOT}/git`);
 
 	// Begin cloning
-	const execResult = shell.exec(`git clone ${repoUrl}`);
+	const execResult: ShellString = shell.exec(`git clone ${repoUrl}`);
 
 	if (execResult.code === 0) {
 		info("Clone was successful");
@@ -42,7 +42,7 @@ const copyScripts = (): number => {
 	shell.cd(`${SERVER_ROOT}`);
 
 	// Copy the scripts folder from the root directory to the repository directory
-	const result = shell.cp("-rf", "scripts/", `${SERVER_ROOT}/git/assignment-tests-mandatory`);
+	const result: ShellString = shell.cp("-rf", "scripts/", `${SERVER_ROOT}/git/assignment-tests-mandatory`);
 
 	if (result.code === 0) {
 		info("Copy was successful");
@@ -60,7 +60,7 @@ const copyScripts = (): number => {
  */
 const runBuildScript = (): number => {
 	shell.cd(`${SERVER_ROOT}/git/assignment-tests-mandatory`);
-	const result = shell.exec(
+	const result: ShellString = shell.exec(
 		`${SERVER_ROOT}/git/assignment-tests-mandatory/scripts/build_script_with_logs.sh`
 	);
 
@@ -89,7 +89,7 @@ const runBuildScript = (): number => {
  */
 const cleanupDirs = (): number => {
 	shell.cd(SERVER_ROOT);
-	const rm_status = shell.rm("-rf", `${SERVER_ROOT}/git/assignment-tests-mandatory`);
+	const rm_status: ShellString = shell.rm("-rf", `${SERVER_ROOT}/git/assignment-tests-mandatory`);
 
 	if (rm_status.code === 0) {
 		info("Cleaned up git directory");

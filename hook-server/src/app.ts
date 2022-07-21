@@ -1,13 +1,13 @@
 #!$(which node)
 
 // import './utils/environment-variables'
-import express, { Request, Response } from "express";
+import express, { Express, Request, Response } from "express";
 import { ipLogger } from "./middleware/logger-middleware";
 import { githubRouter } from "./routes/github.routes";
 import { info, error } from "./utils/logger";
 
-const app = express();
-const port = 8080;
+const app: Express = express();
+const port: number = 8080;
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));

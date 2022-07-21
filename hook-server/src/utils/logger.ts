@@ -11,8 +11,8 @@ logger.info("We are live!");
 // output: [2022-03-26 16:02:12] [INFO] We are Live!
  */
 const info = (text: unknown): void => {
-	const type = colorText(colors.fg.green, " [INFO]");
-	const time = formatDateTime();
+	const type: string = colorText(colors.fg.green, " [INFO]");
+	const time: string = formatDateTime();
 	console.log(`${time}${type} ${text}`);
 };
 
@@ -26,8 +26,8 @@ const info = (text: unknown): void => {
  * // output: [2022-03-26 15:59:33] [WARN] Timeout, retrying 1/3
  */
 const warn = (text: unknown): void => {
-	const type = colorText(colors.fg.yellow, " [WARN]");
-	const time = formatDateTime();
+	const type: string = colorText(colors.fg.yellow, " [WARN]");
+	const time: string = formatDateTime();
 	console.warn(`${time}${type} ${text}`);
 };
 
@@ -40,8 +40,8 @@ const warn = (text: unknown): void => {
 // output: [2022-03-26 15:59:33][ERROR] Something went wrong!
  */
 const error = (text: unknown) => {
-	const type = colorText(colors.fg.red, "[ERROR]");
-	const time = formatDateTime();
+	const type: string = colorText(colors.fg.red, "[ERROR]");
+	const time: string = formatDateTime();
 	console.error(`${time}${type} ${text}`);
 };
 
@@ -58,11 +58,11 @@ const error = (text: unknown) => {
  */
 const formatDateTime = (): string => {
 	// Date time in format of 2022-03-26T15:59:33.12311
-	const current_date_time = new Date().toISOString();
+	const current_date_time: string = new Date().toISOString();
 	// Take on the date part of time: eg 2022-03-26
-	const date = current_date_time.split("T")[0];
+	const date: string = current_date_time.split("T")[0];
 	// Take only the time part of time, discarding ms: eg 15:59:33
-	const time = current_date_time.split("T")[1].split(".")[0];
+	const time: string = current_date_time.split("T")[1].split(".")[0];
 	return `[${date} ${time}]`;
 };
 
