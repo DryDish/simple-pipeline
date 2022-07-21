@@ -3,7 +3,8 @@ Description=GitHub webhooks listener
 After=network.target
 
 [Service]
-ExecStart=/home/${USER}/hook-server/build/app.js
+Environment=USER=%u
+ExecStart=/bin/sh -c "/home/$USER/hook-server/build/app.js"
 Restart=always
 User=ubuntu
 # Note Debian/Ubuntu uses 'nogroup', RHEL/Fedora uses 'nobody'
