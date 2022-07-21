@@ -14,7 +14,7 @@ First thing is always to update and upgrade the current packages
 
 
 # Install Docker & Docker Compose Automatically
-I have provided a [script](linux-files/scripts/install-docker.sh) to automatically install docker and docker compose.
+I have provided a [script](linux-files/scripts/install-scripts/install-docker.sh) to automatically install docker and docker compose.
 
 To use it first mark it as executable with the command:
 * `chmod +x install-docker.sh`
@@ -56,6 +56,26 @@ Now that that's completed, reboot to apply the changes
 
 To validate that docker is installed run: `docker run hello-world`.
 To validate that docker compose is installed run: `docker compose version`
+
+
+# NodeJS in Ubuntu Server
+As of the time of writing the latest node version available on the Ubuntu repositories is 10.22.9.
+
+In order to install a more recent version of NodeJS we can use the helper script provided by NodeSource. It will automatically add the PPA for the NodeJS version specified. The advantage of doing it this way is that it will be kept up to date by apt as well.
+
+# Install NodeJS 16 Automatically
+I have provided a [script](linux-files/scripts/install-scripts/install-nodejs.sh) to install NodeJS in one execution as well.
+
+This one is far less useful, as it only runs two lines, but nice to have for simplicity.
+
+# Install NodeJS 16 Manually
+Script to add PPAs and update APT cache
+* `curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -`
+
+Install NodeJS and NPM
+* `sudo apt install -y nodejs`
+
+
 
 # Project Setup
 
