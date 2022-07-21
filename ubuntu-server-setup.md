@@ -69,7 +69,7 @@ I have provided a [script](linux-files/scripts/install-scripts/install-nodejs.sh
 This one is far less useful, as it only runs two lines, but nice to have for simplicity.
 
 # Install NodeJS 16 Manually
-Script to add PPAs and update APT cache
+Script to add PPAs and update APT cache from NodeSource
 * `curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -`
 
 Install NodeJS and NPM
