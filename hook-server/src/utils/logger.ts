@@ -10,11 +10,11 @@ logger.info(`User has connected from ${country}`);
 logger.info("We are live!");
 // output: [2022-03-26 16:02:12] [INFO] We are Live!
  */
-function info(text: unknown) {
+const info = (text: unknown): void => {
 	const type = colorText(colors.fg.green, " [INFO]");
 	const time = formatDateTime();
 	console.log(`${time}${type} ${text}`);
-}
+};
 
 /**
  * Simple wrapper to `console.warn` that appends a date and time
@@ -25,11 +25,11 @@ function info(text: unknown) {
  * logger.warn("Timeout, retrying 1/3");
  * // output: [2022-03-26 15:59:33] [WARN] Timeout, retrying 1/3
  */
-function warn(text: unknown) {
+const warn = (text: unknown): void => {
 	const type = colorText(colors.fg.yellow, " [WARN]");
 	const time = formatDateTime();
 	console.warn(`${time}${type} ${text}`);
-}
+};
 
 /**
  * Simple wrapper to `console.error` that appends a date and time
@@ -39,11 +39,11 @@ function warn(text: unknown) {
  * @example logger.error("Something went wrong!");
 // output: [2022-03-26 15:59:33][ERROR] Something went wrong!
  */
-function error(text: unknown) {
+const error = (text: unknown) => {
 	const type = colorText(colors.fg.red, "[ERROR]");
 	const time = formatDateTime();
 	console.error(`${time}${type} ${text}`);
-}
+};
 
 /**
  * Formats the current date and time according to: `yyyy-MM-dd HH:mm:ss` and
@@ -56,7 +56,7 @@ function error(text: unknown) {
  * console.log(time);
  * // output: [2022-03-26 15:59:33]
  */
-function formatDateTime(): string {
+const formatDateTime = (): string => {
 	// Date time in format of 2022-03-26T15:59:33.12311
 	const current_date_time = new Date().toISOString();
 	// Take on the date part of time: eg 2022-03-26
@@ -64,7 +64,7 @@ function formatDateTime(): string {
 	// Take only the time part of time, discarding ms: eg 15:59:33
 	const time = current_date_time.split("T")[1].split(".")[0];
 	return `[${date} ${time}]`;
-}
+};
 
 /**
  * Returns the given `text` wrapped inside code that will display that text in color in supported terminals
@@ -80,9 +80,9 @@ function formatDateTime(): string {
  *
  * // the colors object can be found on https://simplernerd.com/js-console-colors/
  */
-function colorText(color: String, text: String): string {
+const colorText = (color: String, text: String): string => {
 	return `${color}${text}${colors.reset}`;
-}
+};
 
 // Simple object to store many useful colors for text wrapping
 // From: https://simplernerd.com/js-console-colors/

@@ -1,13 +1,14 @@
-import { GIT_REPO_URL, SERVER_ROOT } from "./environment-variables";
+import { SERVER_ROOT } from "./environment-variables";
 import shell from "shelljs";
 import { error, warn, info } from "./logger.js";
 
 /**
  * Clones the GitHub repository to a folder named `git` in the project root
+ * @param {*} repoUrl
  *
  * @returns {number} The return code of the operation
  */
-function gitClone(): number {
+const gitClone = (repoUrl: string): number => {
 	info(`Cloning repository...`);
 
 	// Make the git folder, if it does not exist
@@ -17,7 +18,7 @@ function gitClone(): number {
 	shell.cd(`${SERVER_ROOT}/git`);
 
 	// Begin cloning
-	const execResult = shell.exec(`git clone ${GIT_REPO_URL}`);
+	const execResult = shell.exec(`git clone ${repoUrl}`);
 
 	if (execResult.code === 0) {
 		info("Clone was successful");
@@ -27,14 +28,14 @@ function gitClone(): number {
 		error(`exec return code: ${execResult.code}`);
 		return 1;
 	}
-}
+};
 
 /**
  * Copies the local scripts to the cloned repository
  *
  * @returns {number} The return code of the operation
  */
-function copyScripts(): number {
+const copyScripts = (): number => {
 	info("Copying scripts folder to clone dir...");
 
 	// Enter root directory
@@ -50,14 +51,14 @@ function copyScripts(): number {
 		error("Failed to copy scripts folder!");
 		return 1;
 	}
-}
+};
 
 /**
  * Executes the build script stored in the `scripts` folder
  *
  * @returns {number} The return code of the operation
  */
-function runBuildScript(): number {
+const runBuildScript = (): number => {
 	shell.cd(`${SERVER_ROOT}/git/assignment-tests-mandatory`);
 	const result = shell.exec(
 		`${SERVER_ROOT}/git/assignment-tests-mandatory/scripts/build_script_with_logs.sh`
@@ -79,14 +80,14 @@ function runBuildScript(): number {
 		error(`Unknown error occurred: Error code: ${result.code}`);
 		return result.code;
 	}
-}
+};
 
 /**
  * Removes the pulled repository from the `git` folder
  *
  * @returns {number} The return code of the operation
  */
-function cleanupDirs(): number {
+const cleanupDirs = (): number => {
 	shell.cd(SERVER_ROOT);
 	const rm_status = shell.rm("-rf", `${SERVER_ROOT}/git/assignment-tests-mandatory`);
 
@@ -97,6 +98,6 @@ function cleanupDirs(): number {
 		warn("Cleaning up directory failed!");
 		return 1;
 	}
-}
+};
 
 export { gitClone, copyScripts, runBuildScript, cleanupDirs };

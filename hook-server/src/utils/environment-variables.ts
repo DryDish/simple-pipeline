@@ -1,17 +1,17 @@
-import "dotenv/config";
-import { error} from "./logger.js";
+import { error } from "./logger.js";
 import { exit } from "shelljs";
 
-const SYSTEM_USER = process.env.USER!;
+const SYSTEM_USER = process.env.USER;
 
-const GIT_REPO_URL = process.env.GIT_REPO_URL!;
-const SERVER_ROOT = `/home/${SYSTEM_USER}/hook-server`;
+const folderNameLength = "hook-server".length;
+const hookIndex = __dirname.lastIndexOf("hook-server") + folderNameLength;
 
-if (GIT_REPO_URL == undefined || SERVER_ROOT === undefined) {
-    error("Critical ENVs not set, aborting!");
-    error(`GIT_REPO_URL was set to: '${GIT_REPO_URL}'`)
-    error(`SERVER_ROOT was set to: '${SERVER_ROOT}'`)
-    exit(1);
+const SERVER_ROOT = __dirname.slice(0, hookIndex);
+
+if (SERVER_ROOT == undefined || SYSTEM_USER == undefined) {
+	error("Critical ENVs not set, aborting!");
+	error(`SERVER_ROOT was set to: '${SERVER_ROOT}'`);
+	exit(1);
 }
 
-export { GIT_REPO_URL, SERVER_ROOT };
+export { SERVER_ROOT, SYSTEM_USER };

@@ -1,9 +1,10 @@
 #!$(which node)
 
 // import './utils/environment-variables'
-import express, { NextFunction, Request, Response } from "express";
-import { info, error, warn } from "./utils/logger";
-import { gitClone, copyScripts, runBuildScript, cleanupDirs } from "./utils/functions";
+import express, { Request, Response } from "express";
+import { ipLogger } from "./middleware/logger-middleware";
+import { githubRouter } from "./routes/github.routes";
+import { info, error } from "./utils/logger";
 
 const app = express();
 const port = 8080;
@@ -12,73 +13,17 @@ const port = 8080;
 app.use(express.urlencoded({ extended: false }));
 // parse application/json
 app.use(express.json());
-
-// Log IP source of incoming message
-const logger = (req: Request, _res: Response, next: NextFunction) => {
-	info(`Message received from ip: ${req.ip} `);
-	next();
-};
+// Log incoming request's IP address
+app.use(ipLogger);
 
 // Default
-app.get("/", logger, (_req: Request, res: Response) => {
+app.get("/", (_req: Request, res: Response) => {
 	info(`Incoming default request, responding`);
 	res.status(200).json({ message: "Hello, world!" });
 });
 
-// Testing POST endpoint - used to debug and print incoming messages and bodies
-app.post("/test", logger, (req: Request, res: Response) => {
-	info(`Incoming POST request on default, responding`);
-	info(`body:\n${JSON.stringify(req.body, null, 4)}`);
-	res.status(200).json({ message: "received", body: req.body });
-});
-
-/**
- * Listens for GitHub webhook triggers.
- *
- * GitHub will send a webhook on any push event on the repository to this endpoint.
- * It will read the ref of that message body to check the branch.
- * If the branch is main, it will continue on to test and build the code.
- * If the branch is anything other than main, it will acknowledge the message and do nothing.
- */
-app.post("/github", logger, (req: Request, res: Response) => {
-	info(`Incoming GitHub hook!`);
-
-	if (req.body.ref === "refs/heads/main") {
-		res.status(200).json({ status: "beginning build", reason: "correct branch" });
-		info("This is the right branch, proceeding..");
-
-		// Initialize my return variables
-		let clone_result, copy_result, script_result;
-
-		// Clone repository
-		clone_result = gitClone();
-
-		// If it succeeded
-		if (clone_result === 0) {
-			// Copy build scripts and ENVs to clone dir
-			copy_result = copyScripts();
-
-			// If copy succeeded
-			if (copy_result === 0) {
-				// Execute the build script
-				script_result = runBuildScript();
-			}
-		}
-
-		// Delete the cloned dir
-		cleanupDirs();
-
-		// If build script succeeded
-		if (script_result === 0) {
-			info("Build SUCCESS");
-		} else {
-			error("Build FAILED");
-		}
-	} else {
-		warn(`Wrong branch: ${req.body.ref}`);
-		res.status(200).json({ status: "skipped", reason: "not main branch" });
-	}
-});
+// Router for GitHub endpoint
+app.use("/github", githubRouter);
 
 // Invalid URL - default
 app.all("*", (req: Request, res: Response) => {
