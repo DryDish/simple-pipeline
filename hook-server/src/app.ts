@@ -1,4 +1,4 @@
-#!$(which node)
+#!/usr/bin/node
 
 // import './utils/environment-variables'
 import express, { Express, Request, Response } from "express";
