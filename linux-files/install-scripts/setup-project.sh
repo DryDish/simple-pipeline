@@ -34,4 +34,5 @@ sudo systemctl enable hook-server.service --now
 
 echo ""
 echo "> Script exectution completed!"
+echo "> Run: 'systemctl status hook-server.service' to verify the status of the newly installed service"
 echo ""

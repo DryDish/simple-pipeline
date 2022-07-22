@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo "> Updating and upgading apt cache and packages..."
-sudo apt update && sudo apt upgrade -y:
+sudo apt update && sudo apt upgrade -y
 
 echo "> Adding required dependencies..."
-sudo apt-get install ca-certificates curl gnupg lsb-release
+sudo apt install ca-certificates curl gnupg lsb-release
 
 echo "> Getting docker gpg key to validate their repositories..."
 sudo mkdir -p /etc/apt/keyrings
@@ -17,7 +17,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 
 echo "> Updating package manager and installing docker and docker compose..."
 sudo apt update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 
 echo "> Adding docker to usergroup..."
