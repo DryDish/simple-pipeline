@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # Must be run as sudo
 
 # Add required dependecies
