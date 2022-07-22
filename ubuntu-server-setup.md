@@ -72,9 +72,7 @@ NodeJS version specified. The advantage of doing it this way is that it
  will be kept up to date by apt as well.
 
 # Install NodeJS 16 Automatically
-I have provided a [script](
-    ./linux-files/install-scripts/install-nodejs.sh
-) to install NodeJS in one execution as well.
+I have provided a [script](linux-files/install-scripts/install-nodejs.sh) to install NodeJS in one execution as well.
 
 This one is far less useful, as it only runs two lines, but nice to have for
  simplicity.
@@ -134,3 +132,32 @@ If more logs are needed, run the following command to see all logs:
 
 If desired an additional flag of `-f` can be added to the previous command to
  follow the logs as they are generated
+
+---
+
+# Running the pipeline
+
+In this repository i have included a sample message of what GitHub would send
+ to the server in the event of a push event in a.json file called
+  [sample-webhook.json](linux-files/test-files/sample-webhook.json).
+
+This file is a push on main on the repository this pipeline was built for.
+
+Use Postman, or something similar, to send a post request to 
+ localhost:8080/github with the body of the message being the contents of the 
+ sample-webhook.json file.
+
+It will do the following:
+
+1. Checkout the branch specified in the file
+2. Spin up the containers required to run the test suite
+3. Execute the test suite
+4. If the test suite passes, it will build the containers of the application
+5. Sign in to DockerHub with the credentials provided in the 
+ [setup-env.sh](hook-server/src/utils/scripts/setup-env.sh) file.
+6. Push the docker images to the remote repository.
+
+
+If the test suite passes, the exit code will be `0`.
+
+Any non `0` exit code is to be considered a failed pipeline execution.
