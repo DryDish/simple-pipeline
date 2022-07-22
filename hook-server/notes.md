@@ -1,6 +1,6 @@
 hook-server is stored in the home directory of the ec2 instance. namely `/home/ubuntu`
 
-the service file must be copied to `/ect/systemd/`
+the service file must be copied to `/ect/systemd/system`
 
 the app.js inside src must be marked as executable with `chmod u+x app.js` 
 
