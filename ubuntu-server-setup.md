@@ -1,163 +1,140 @@
 # Setup for Ubuntu Server 22.04
 
-# THIS GUIDE IS WIP, LOTS WILL BE CHANGED BY THE TIME I AM DONE
-
 This is a guide to prepare a new Ubuntu Server instance to be able to run the
- pipeline as it was intended to.
+pipeline as it was intended to.
 
 Required software that is not included in the Ubuntu Server 22.04 ISO:
-* Docker
-* Docker Compose
+
+- Docker
+- Docker Compose
+- NodeJs
+- Npm
 
 First thing is always to update and upgrade the current packages
 
-* `sudo apt update && sudo apt upgrade`
+- `sudo apt update && sudo apt upgrade`
 
+# Install Docker & Docker Compose
 
-# Install Docker & Docker Compose Automatically
-I have provided a [script](
-    linux-files/install-scripts/install-docker.sh
-) to automatically install docker and docker compose.
+## Docker dependencies
 
-To use it first mark it as executable with the command:
-* `chmod +x install-docker.sh`
+1. `sudo apt install ca-certificates curl gnupg lsb-release`
 
-Then execute it with sudo:
-* `sudo ./install-docker.sh`
+## Docker repositories
 
-# Install Docker & Docker Compose Manually
-
-### Docker dependencies
-1. `sudo apt-get install ca-certificates curl gnupg lsb-release`
-
-### Docker repositories
 Add Dockers GPG key to use their repositories, as Ubuntu's ones tend to be out
- of date
+of date
 
 1. `sudo mkdir -p /etc/apt/keyrings`
-2. `curl -fsSL https://download.docker.com/linux/ubuntu/gpg |  sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg`
+2. `curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg`
 
 Add the repository with the newly added gpg key
 
 3. `echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null`
 
+## Install Docker components
 
-### Install Docker components
 Update apt and install docker
 
 1. `sudo apt update`
-2. `sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin`
+2. `sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin`
 
-### Postinstall (optional)
+## Postinstall
+
 The following steps will allow the execution of docker without having to
- provide the root password
+provide the root password
 
 1. `sudo groupadd docker`
 2. `sudo usermod -aG docker $USER`
 
 Now that that's completed, reboot to apply the changes
 
-3. `sudo reboot`
+3. `sudo shutdown -r now`
 
 To validate that Docker and Docker Compose is installed correctly run:
-* `docker run hello-world` and `docker compose version`
+
+- `docker run hello-world` and `docker compose version`
 
 # NodeJS in Ubuntu Server
+
 As of the time of writing the latest node version available on the Ubuntu
- repositories is 10.22.9.
+repositories is 10.22.9.
 
 In order to install a more recent version of NodeJS we can use the helper
- script provided by NodeSource. It will automatically add the PPA for the
+script provided by NodeSource. It will automatically add the PPA for the
 NodeJS version specified. The advantage of doing it this way is that it
- will be kept up to date by apt as well.
+will be kept up to date by APT as well.
 
-# Install NodeJS 16 Automatically
-I have provided a [script](linux-files/install-scripts/install-nodejs.sh) to install NodeJS in one execution as well.
+# Install NodeJS 16
 
-This one is far less useful, as it only runs two lines, but nice to have for
- simplicity.
-
-# Install NodeJS 16 Manually
 Script to add PPAs and update APT cache from NodeSource
-* `curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -`
+
+- `curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -`
 
 Install NodeJS and NPM
-* `sudo apt install -y nodejs`
 
-
+- `sudo apt install -y nodejs`
 
 # Project Setup
 
-
 ## clone repo
+
 Create a folder in /opt where we will store the application
-* `sudo mkdir /opt/hook-server`
+
+- `sudo mkdir /opt/hook-server`
 
 And a folder for the application logs
-* `mkdir -p ~/.log/hook-server`
+
+- `mkdir -p ~/.log/hook-server`
 
 Clone the repository to a temporary directory
-*  `git clone https://github.com/DryDish/simple-pipeline /tmp/gittemp`
+
+- `git clone https://github.com/DryDish/simple-pipeline /tmp/gittemp`
 
 Move the hook-server out of the repository folders
-* `mv /tmp/gittemp/hook-server /tmp/hook-server`
+
+- `mv /tmp/gittemp/hook-server /tmp/hook-server`
 
 Install the NPM modules in the hook-server subfolder
-* `cd /tmp/hook-server`
-* `npm install`
+
+- `cd /tmp/hook-server`
+- `npm install`
 
 Build the project with:
-* `npm run build`
+
+- `npm run build`
 
 Mark the built app.js as executable:
-* `chmod +x /tmp/hook-server/build/app.js`
+
+- `chmod +x /tmp/hook-server/build/app.js`
 
 Move the compiled application folder to /opt/hook-server
-* `sudo mv /tmp/hook-server /opt/`
+
+- `sudo mv /tmp/hook-server /opt/`
 
 Copy the service config to /etc/systemd/system:
-* `sudo cp /tmp/gittemp/linux-files/hook-server.service /etc/systemd/system/hook-server.service`
+
+- `sudo cp /tmp/gittemp/linux-files/hook-server.service /etc/systemd/system/hook-server.service`
 
 Enable the service so that it starts on boot, and start it:
-* `sudo systemctl enable hook-server.service --now`
+
+- `sudo systemctl enable hook-server.service --now`
 
 To validate that the service is running correctly run:
-* `systemctl status hook-server.service | grep Active`
 
-The output should look something like this: 
+- `systemctl status hook-server.service | grep Active`
+
+The output should look something like this:
+
 > Active: active (running) since Thu 2022-07-21 22:10:26 UTC; 3s ago
 
 If more logs are needed, run the following command to see all logs:
-* `journalctl -u hook-server.service`
+
+- `journalctl -u hook-server.service`
 
 If desired an additional flag of `-f` can be added to the previous command to
- follow the logs as they are generated
+follow the logs as they are generated
 
----
-
-# Running the pipeline
-
-In this repository i have included a sample message of what GitHub would send
- to the server in the event of a push event in a.json file called
-  [sample-webhook.json](linux-files/test-files/sample-webhook.json).
-
-This file is a push on main on the repository this pipeline was built for.
-
-Use Postman, or something similar, to send a post request to 
- localhost:8080/github with the body of the message being the contents of the 
- sample-webhook.json file.
-
-It will do the following:
-
-1. Checkout the branch specified in the file
-2. Spin up the containers required to run the test suite
-3. Execute the test suite
-4. If the test suite passes, it will build the containers of the application
-5. Sign in to DockerHub with the credentials provided in the 
- [setup-env.sh](hook-server/src/utils/scripts/setup-env.sh) file.
-6. Push the docker images to the remote repository.
-
-
-If the test suite passes, the exit code will be `0`.
-
-Any non `0` exit code is to be considered a failed pipeline execution.
+Any log generated will additionally be stored in: `~/.log/hook-server`. A new
+log file is created each day with the naming convention of `YYYY-MM-DD.txt` so
+as to not over-populate any one log file.
