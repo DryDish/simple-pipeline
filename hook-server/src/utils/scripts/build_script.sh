@@ -32,7 +32,7 @@ if [ $test_result -eq 0 ]; then
 
     echo "Tests passed! Building the project..."
     # Build the project
-    docker compose build express-app-prod addresses-db-prod
+    docker compose build express-app-prod addresses-db-prod --no-cache
 
     echo "Logging in to DockerHub..."
     # Log in to DockerHub using ENV for username and token
