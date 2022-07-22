@@ -3,11 +3,12 @@ Description=GitHub webhooks listener
 After=network.target
 
 [Service]
-User=ubuntu # This has to be your actual user name
+# This has to be your actual user name
+User=ubuntu
 
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
-WorkingDirectory=/home/ubuntu/hook-server
+WorkingDirectory=/opt/hook-server
 Restart=always
 
 ExecStart=/bin/sh -c "/opt/hook-server/build/app.js"
