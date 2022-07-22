@@ -63,7 +63,8 @@ To validate that Docker and Docker Compose is installed correctly run:
 * `docker run hello-world` and `docker compose version`
 
 # NodeJS in Ubuntu Server
-As of the time of writing the latest node version available on the Ubuntu repositories is 10.22.9.
+As of the time of writing the latest node version available on the Ubuntu
+ repositories is 10.22.9.
 
 In order to install a more recent version of NodeJS we can use the helper
  script provided by NodeSource. It will automatically add the PPA for the
@@ -75,7 +76,8 @@ I have provided a [script](
     ./linux-files/install-scripts/install-nodejs.sh
 ) to install NodeJS in one execution as well.
 
-This one is far less useful, as it only runs two lines, but nice to have for simplicity.
+This one is far less useful, as it only runs two lines, but nice to have for
+ simplicity.
 
 # Install NodeJS 16 Manually
 Script to add PPAs and update APT cache from NodeSource
@@ -94,7 +96,7 @@ Create a folder in /opt where we will store the application
 * `sudo mkdir /opt/hook-server`
 
 And a folder for the application logs
-* `sudo mkdir /var/log/hook-server`
+* `mkdir -p ~/.log/hook-server`
 
 Clone the repository to a temporary directory
 *  `git clone https://github.com/DryDish/simple-pipeline /tmp/gittemp`
@@ -130,5 +132,5 @@ The output should look something like this:
 If more logs are needed, run the following command to see all logs:
 * `journalctl -u hook-server.service`
 
-If desired an additional flag of `-f` can be added to the previous comand to
+If desired an additional flag of `-f` can be added to the previous command to
  follow the logs as they are generated

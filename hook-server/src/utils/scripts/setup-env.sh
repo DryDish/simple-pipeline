@@ -9,4 +9,4 @@ export SERVICE_HOST='express-app-prod'
 export MYSQL_USER='test'
 export MYSQL_PASSWORD='12345678'
 export DOCKER_USER='username'
-export DOCKER_TOKEN='password
+export DOCKER_TOKEN='password'
