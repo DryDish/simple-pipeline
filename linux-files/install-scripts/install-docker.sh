@@ -14,7 +14,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 
 echo "> Updating package manager and installing docker and docker compose..."
 sudo apt update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 
 
 echo "> Adding docker to usergroup..."
@@ -29,6 +29,6 @@ read -p '> Would you like to restart now? [y/N]: ' answer
 if [[ "$answer" =~ ^[yY] ]]; then
     echo "> Rebooting in 3 seconds..."
     sleep 3
-    shutdown -r now
+    sudo shutdown -r now
 fi
 exit 0
