@@ -41,13 +41,6 @@ found: [here](ubuntu-server-setup.md)
 
 # Running the pipeline
 
-If you want to see the pipeline in action, you can use Postman or something
-similar to send a POST request to `localhost:8080/github` with the sample
-[webhook message](linux-files/test-files/sample-webhook.json) I included in the
-folder: linux-files/test-files/ of the repository.
-
-# Running the pipeline
-
 In this repository i have included a sample message of what GitHub would send
 to the server in the event of a push event in a.json file called
 [sample-webhook.json](linux-files/test-files/sample-webhook.json) located in:
